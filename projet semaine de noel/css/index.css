@@ -1,0 +1,17 @@
+body {
+    background-image: url(../image/142443-widescreen-blue-ombre-background-1920x1080-photo.jpg);
+    background-attachment:fixed;
+    background-repeat:no-repeat;
+    background-position:center center;
+}
+
+.Titre {
+    position: relative;
+    margin: auto;
+    margin-left: 42.5%;
+    margin-top: 3.5%;
+    font-size: xx-large;
+    font-family: "Hunters";
+    src: url("Hunters.otf");
+    color: white;
+}
