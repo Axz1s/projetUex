@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="index.css">
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Teko" rel="stylesheet"> 
+
     <title>Calculatron</title>
     <script language="JAVASCRIPT">
      <!--
@@ -184,7 +186,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                 </td>
               </tr>
               <tr> 
-                <td colspan=2> <b>Resultats :</b> </td>
+                <td colspan=2><p class="resultats">Résultats :</p> </td>
               </tr>
               <tr> 
                 <td> 
@@ -221,7 +223,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                   </td>
                 </tr>
                 <tr> 
-                  <td> <b>Resultats:</b> </td>
+                  <td> <p class="resultats">Résultats:</p> </td>
                   <td> 
                     <input type="text" name="IP1" size="3" maxlength="3">
                     
@@ -255,10 +257,11 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                     
                     <input type="text" name="IP4" size="3" maxlength="3" value="0">
                     <input type="button" value="Calculer" name="B1" onClick="CalcMask2Len(this.form)">
+                    
                   </td>
                 </tr>
                 <tr> 
-                  <td> <b>Resultats :</b> </td>
+                  <td> <p class="resultats">Résultats :</p> </td>
                   <td> 
                     <input type="text" name="idReseau" size="2" maxlength="2">
                   </td>
