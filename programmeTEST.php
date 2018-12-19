@@ -2,18 +2,19 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="index.css">
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Amatic+SC|Teko" rel="stylesheet"> 
-
+    <link rel="stylesheet" href="programme.css">
+    <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet"> 
     <title>Calculatron</title>
     <script language="JAVASCRIPT">
-     <!--
+
+
+//fonction ip (ip à rentrer)
 nGlobal=0;
 function ClearBroadcast(f) {
   f.Broadcast.value = "";
   f.Reseau.value = "";
 }
+
 function MasqueCalcul2(nMasque) {
   if (nMasque < 1) { return 0; }
   nCalc = 0;
@@ -24,10 +25,13 @@ function MasqueCalcul2(nMasque) {
     if (nMasque <1) { return nCalc; }
   } return nCalc;
 }
+
 function raiseP(x,y) {
   total=1;
-  for (j=0; j < y; j++) { total*=x; } return total; //result of x raised to y power
+  for (j=0; j < y; j++) { total*=x; } return total; //résultat de x porté à y puissance
 }
+
+//fonction masque sous reseau
 function CalcLen2Mask(f) {
   if ((f.idReseau.value < 0)|| (f.idReseau.value>32)) {
     alert("Votre masque doit être compris entre 1 et 32");
@@ -55,18 +59,21 @@ function CalcMask2Len(f) {
     }
   } f.idReseau.value = masque;
 }
+//fin fonction masque sous reseau
+
+//fonction broadcast 
 function CalcBroadcast(f) {
   ClearBroadcast(f);
   var ipcheck=TestIP(f.IP1.value,f.IP2.value,f.IP3.value,f.IP4.value);
   if (ipcheck > 0) { alert("Mauvaise adresse IP!"); return 0; }
   ipcheck=TestMasqueSousReseau(f.SR1.value,f.SR2.value,f.SR3.value,f.SR4.value);
   if (ipcheck > 0) { alert("Mauvais masque de sous réseau!" ); return 0; }
-  // This calculates net address
+  // calcule l'adresse net
   var nOctA1=f.IP1.value & f.SR1.value
   var nOctA2=f.IP2.value & f.SR2.value
   var nOctA3=f.IP3.value & f.SR3.value
   var nOctA4=f.IP4.value & f.SR4.value
-  // This calculates broadcast address
+  // calcule l'adresse de diffusion
   var nOctB1=f.IP1.value | (f.SR1.value ^ 255)
   var nOctB2=f.IP2.value | (f.SR2.value ^ 255)
   var nOctB3=f.IP3.value | (f.SR3.value ^ 255)
@@ -75,8 +82,9 @@ function CalcBroadcast(f) {
   f.Reseau.value = nOctA1+"."+nOctA2+"."+nOctA3+"."+nOctA4
 }
 
+
 function CalcNetworks(f) {
-  // Check IP validity
+  // Vérifier la validité de l'IP
   var ipcheck=TestIP(f.IP1.value,f.IP2.value,f.IP3.value,f.IP4.value);
   if (ipcheck > 0) { alert("Mauvaise adresse IP!"); return 0; }
   alert("L'adresse IP est bonne");	
@@ -96,7 +104,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
   if ((IP3 > 255) || (IP3 < 0)) { return 3; }
   if ((IP4 > 255) || (IP4 < 0)) { return 4; }
   var IPX =5;
-  // Determine where IP changes
+  //  Déterminer où l'IP change
   if (IP1 < 255) {
     if((IP2 > 0) || (IP3 > 0) || (IP4 > 0)) { return 5; }
     IPX = IP1;
@@ -111,7 +119,83 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
         } else { IPX = IP4; }
       }
     }
-    // Determine if IPX is good
+
+
+//fonction classe ip
+  //localhost
+function localhostip(IP1, IP2, IP3, IP4){
+  if (IP1=127){
+    alert("localhost");
+  }
+}
+  //multicast
+function multicastip(IP1, IP2, IP3, IP4){
+  if (IP1 >= 224 and IP1 <= 239){
+    alert("multicastip");
+  }
+}
+  //experimental
+function experimentalip(IP1, IP2, IP3, IP4){
+  if (IP1 >= 240 and IP1 <= 255){
+    alert("multicastip");
+    }
+}
+
+  //apipa
+function apidaip(IP1, IP2, IP3, IP4){
+  if (IP1 == 169 and IP2 == 254){
+    alert("apida");
+  }
+}
+//public A
+function PublicAip(IP1) {
+  if (IP1 >= 1 and IP1 <= 126){
+    alert("publicA");
+  }
+}
+//public B
+function PublicBip(IP1, IP2){
+  if (IP1 >= 128 and IP1 <= 191 and IP1 != 169 and IP2 != 254){
+    alert("PublicB")
+  }
+}
+//public C
+function PublicCip(IP1){ 
+  if (IP1 >= 192 and IP1 <= 223){
+    alert("PublicC")
+  }
+}
+//private C à verif
+function privateCip(IP1, IP2){
+  if (IP1 == 192 and IP2 == 168){
+    if (masque >= 16){
+      alert("privateC")
+    }
+  }
+}
+//private B à vérif
+function privateBip(IP1, IP2){
+  if(IP1 == 172 and IP2 >= 16 and IP2 <= 31){
+    if(masque >= 12){
+      alert("privateB")
+    }
+  }
+}
+//private C à vérif
+function privateCip(IP1){
+  if(IP1  == 10){
+    if(IPX >= 8){
+      alert"privateA"
+    }
+  }
+}
+
+
+//fin de la fonction classe ip
+}
+
+
+    // Determine si IPX est bon
     switch (IPX) {
       case "255":
       case "128":
@@ -127,9 +211,10 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
         return 8;
     } return 0;
   }
-      //-->
     </script>
 </head>
+
+
 <body>
 
     <div class="Titre">
@@ -170,7 +255,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
               </tr>
 
               <tr> 
-
+<!--partie masque sous réseau -->
                 <td> 
                   <div>Entrez le masque de sous réseau :</div>
                 </td>
@@ -186,8 +271,9 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                 </td>
               </tr>
               <tr> 
-                <td colspan=2><p class="resultats">Résultats :</p> </td>
+                <td colspan=2> <b>Resultats :</b> </td>
               </tr>
+<!--partie broadcast-->
               <tr> 
                 <td> 
                   <div>Adresse du Broadcast : </div>
@@ -203,24 +289,22 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                 <td> 
                   <input type="text" name="Reseau" size="20">
                 </td>
-              </tr>
-              <tr> 
-                <td> 
-                  <div>Première adresse IP délivrée : </div>
-                </td>
-                <td> 
-                  <input type="text" name="Broadcast" size="20">
-                </td>
-              </tr>
-              <tr> 
-                <td> 
-                  <div>Dernière adresse IP délivrée : </div>
-                </td>
-                <td> 
-                  <input type="text" name="Broadcast" size="20">
-                </td>
-              </tr>
-            </form>
+              </tr></form>
+<!--formulaire de classe ip-->
+              <form>
+                <tr>
+                  <td>
+                    <div> classe de l'ip : </div>
+                  </td>
+                  <td>
+                    <input type="text" name="classe" size="20" onClick="localhostip(IP1, IP2, IP3, IP4)">
+                  </td>
+                </tr>
+              </form>              
+
+
+
+<!--partie masque de sous-reseau-->
               <form name="fLen2Mask">
                 <tr> 
                   <td colspan=2> &nbsp; 
@@ -228,7 +312,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                   </td>
                 </tr>
                 <tr> 
-                  <td colspan=2 ><b>Calculer le masque de sous-réseau à parir de l'identifiant de réseau</b> 
+                  <td colspan=2 ><b>Calculer le masque de sous-réseaux à parir de l'identifiant de réseau</b> 
                     <hr>
                   </td>
                 </tr>
@@ -240,7 +324,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                   </td>
                 </tr>
                 <tr> 
-                  <td> <p class="resultats">Résultats:</p> </td>
+                  <td> <b>Resultats:</b> </td>
                   <td> 
                     <input type="text" name="IP1" size="3" maxlength="3">
                     
@@ -264,7 +348,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                   </td>
                 </tr>
                 <tr> 
-                  <td> Entrer votre identifiant de réseau : </td>
+                  <td> Entrer votre identifiant de réseaux : </td>
                   <td> 
                     <input type="text" name="IP1" size="3" maxlength="3" value="255">
                      
@@ -274,11 +358,10 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                     
                     <input type="text" name="IP4" size="3" maxlength="3" value="0">
                     <input type="button" value="Calculer" name="B1" onClick="CalcMask2Len(this.form)">
-                    
                   </td>
                 </tr>
                 <tr> 
-                  <td> <p class="resultats">Résultats :</p> </td>
+                  <td> <b>Resultats :</b> </td>
                   <td> 
                     <input type="text" name="idReseau" size="2" maxlength="2">
                   </td>
