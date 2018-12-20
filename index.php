@@ -9,11 +9,13 @@
     <title>Calculatron</title>
     <script language="JAVASCRIPT">
      <!--
+//fonction ip (ip à rentrer)
 nGlobal=0;
 function ClearBroadcast(f) {
   f.Broadcast.value = "";
   f.Reseau.value = "";
 }
+
 function MasqueCalcul2(nMasque) {
   if (nMasque < 1) { return 0; }
   nCalc = 0;
@@ -24,15 +26,16 @@ function MasqueCalcul2(nMasque) {
     if (nMasque <1) { return nCalc; }
   } return nCalc;
 }
+
 function raiseP(x,y) {
   total=1;
-  for (j=0; j < y; j++) { total*=x; } return total; //result of x raised to y power
-}
+  for (j=0; j < y; j++) { total*=x; } return total;
 function CalcLen2Mask(f) {
   if ((f.idReseau.value < 0)|| (f.idReseau.value>32)) {
     alert("Votre masque doit être compris entre 1 et 32");
     return 0;
   }
+//fonction masque sous reseau
   nIdReseau = f.idReseau.value;
   f.IP1.value=MasqueCalcul2(nIdReseau);
   f.IP2.value=MasqueCalcul2(nGlobal);
@@ -55,18 +58,23 @@ function CalcMask2Len(f) {
     }
   } f.idReseau.value = masque;
 }
+//fin fonction masque sous reseau
+
+//fonction broadcast
+
+
 function CalcBroadcast(f) {
   ClearBroadcast(f);
   var ipcheck=TestIP(f.IP1.value,f.IP2.value,f.IP3.value,f.IP4.value);
   if (ipcheck > 0) { alert("Mauvaise adresse IP!"); return 0; }
   ipcheck=TestMasqueSousReseau(f.SR1.value,f.SR2.value,f.SR3.value,f.SR4.value);
   if (ipcheck > 0) { alert("Mauvais masque de sous réseau!" ); return 0; }
-  // This calculates net address
+  // calcule l'adresse net
   var nOctA1=f.IP1.value & f.SR1.value
   var nOctA2=f.IP2.value & f.SR2.value
   var nOctA3=f.IP3.value & f.SR3.value
   var nOctA4=f.IP4.value & f.SR4.value
-  // This calculates broadcast address
+  // calcule l'adresse de diffusion
   var nOctB1=f.IP1.value | (f.SR1.value ^ 255)
   var nOctB2=f.IP2.value | (f.SR2.value ^ 255)
   var nOctB3=f.IP3.value | (f.SR3.value ^ 255)
@@ -74,9 +82,9 @@ function CalcBroadcast(f) {
   f.Broadcast.value = nOctB1+"."+nOctB2+"."+nOctB3+"."+nOctB4
   f.Reseau.value = nOctA1+"."+nOctA2+"."+nOctA3+"."+nOctA4
 }
-
+//fin fonction broadcast
+  // Vérifier la validité de l'IP
 function CalcNetworks(f) {
-  // Check IP validity
   var ipcheck=TestIP(f.IP1.value,f.IP2.value,f.IP3.value,f.IP4.value);
   if (ipcheck > 0) { alert("Mauvaise adresse IP!"); return 0; }
   alert("L'adresse IP est bonne");	
@@ -96,7 +104,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
   if ((IP3 > 255) || (IP3 < 0)) { return 3; }
   if ((IP4 > 255) || (IP4 < 0)) { return 4; }
   var IPX =5;
-  // Determine where IP changes
+    //  Déterminer où l'IP change
   if (IP1 < 255) {
     if((IP2 > 0) || (IP3 > 0) || (IP4 > 0)) { return 5; }
     IPX = IP1;
@@ -111,7 +119,7 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
         } else { IPX = IP4; }
       }
     }
-    // Determine if IPX is good
+    // Determine si IPX est bon
     switch (IPX) {
       case "255":
       case "128":
@@ -127,7 +135,6 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
         return 8;
     } return 0;
   }
-  
       //-->
     </script>
 </head>
@@ -204,22 +211,6 @@ function TestMasqueSousReseau(IP1, IP2, IP3, IP4) {
                 </td>
                 <td> 
                   <input type="text" name="Reseau" size="20">
-                </td>
-              </tr>
-              <tr> 
-                <td> 
-                  <div>Première adresse IP délivrée : </div>
-                </td>
-                <td> 
-                  <input type="text" name="Premiere" size="20">
-                </td>
-              </tr>
-              <tr> 
-                <td> 
-                  <div>Dernière adresse IP délivrée : </div>
-                </td>
-                <td> 
-                  <input type="text" name="Derniere" size="20">
                 </td>
               </tr>
             </form>
